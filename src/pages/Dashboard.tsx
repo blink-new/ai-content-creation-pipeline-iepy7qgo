@@ -35,6 +35,7 @@ export default function Dashboard() {
     views: 0
   })
   const [analyticsLoading, setAnalyticsLoading] = useState(false)
+  const [analyticsError, setAnalyticsError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -62,15 +63,21 @@ export default function Dashboard() {
         
         // Now fetch analytics data
         setAnalyticsLoading(true)
+        setAnalyticsError(null)
         try {
           const analyticsData = await getAnalyticsData()
           setStats(prev => ({
             ...prev,
             views: analyticsData.views
           }))
-        } catch (analyticsError) {
+        } catch (analyticsError: any) {
+          setAnalyticsError(
+            'Failed to fetch analytics. This is usually a Supabase Edge Function deployment or network issue. ' +
+            'Check that your function is deployed and reachable at: ' +
+            'https://' + process.env.VITE_SUPABASE_URL?.replace('https://', '') + '/functions/v1/get-analytics' +
+            '\nError: ' + (analyticsError?.message || analyticsError)
+          )
           console.error('Error loading analytics:', analyticsError)
-          // Don't show a toast for analytics failure, just log it
         } finally {
           setAnalyticsLoading(false)
         }
@@ -198,6 +205,26 @@ export default function Dashboard() {
             </a>
             <Button variant="outline" onClick={() => window.location.reload()}>
               Retry Connection
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show analytics error if present
+  if (analyticsError) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[80vh] gap-4">
+        <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg max-w-xl w-full">
+          <div className="flex items-center gap-2 mb-2">
+            <AlertCircle className="h-5 w-5 text-yellow-500" />
+            <h2 className="text-lg font-semibold text-yellow-700">Analytics Connection Error</h2>
+          </div>
+          <p className="text-yellow-700 mb-4 whitespace-pre-line">{analyticsError}</p>
+          <div className="mt-4 flex gap-2 justify-end">
+            <Button variant="outline" onClick={() => window.location.reload()}>
+              Retry
             </Button>
           </div>
         </div>
