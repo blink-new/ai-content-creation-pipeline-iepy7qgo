@@ -71,10 +71,11 @@ export default function Dashboard() {
             views: analyticsData.views
           }))
         } catch (analyticsError: any) {
+          const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL || '').replace('https://', '')
           setAnalyticsError(
             'Failed to fetch analytics. This is usually a Supabase Edge Function deployment or network issue. ' +
             'Check that your function is deployed and reachable at: ' +
-            'https://' + process.env.VITE_SUPABASE_URL?.replace('https://', '') + '/functions/v1/get-analytics' +
+            (supabaseUrl ? `https://${supabaseUrl}/functions/v1/get-analytics` : '[Supabase URL not set]') +
             '\nError: ' + (analyticsError?.message || analyticsError)
           )
           console.error('Error loading analytics:', analyticsError)
