@@ -4,6 +4,10 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.7.1";
 serve(async (req) => {
   let userId: string | null = null;
 
+  // Get JWT from Authorization header
+  const authHeader = req.headers.get('authorization') || req.headers.get('Authorization');
+  const jwt = authHeader?.replace('Bearer ', '').trim();
+
   if (req.method === 'GET') {
     const url = new URL(req.url);
     userId = url.searchParams.get('userId');
@@ -23,16 +27,20 @@ serve(async (req) => {
   }
 
   try {
-    // Create Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') as string;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') as string;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    // Use anon key and pass JWT for RLS
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY');
+    if (!supabaseUrl || !supabaseAnonKey) {
+      return new Response(JSON.stringify({ error: 'Supabase env vars missing' }), { status: 500 });
+    }
+    const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+      global: { headers: { Authorization: `Bearer ${jwt}` } }
+    });
 
-    // Get all projects for the user
+    // Get all projects for the user (RLS will enforce user access)
     const { data: projects, error: projectsError } = await supabase
       .from('projects')
-      .select('id, title, status, created_at')
-      .eq('user_id', userId);
+      .select('id, title, status, created_at');
 
     if (projectsError) {
       throw new Error('Failed to fetch projects');
