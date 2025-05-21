@@ -1,0 +1,186 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 33% 98%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 256 100% 65%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 183 98% 42%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 100% 70%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 256 100% 65%;
+    --radius: 0.75rem;
+  }
+ 
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 256 100% 65%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 183 98% 42%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 100% 70%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 256 100% 65%;
+  }
+
+  html {
+    font-family: 'Nunito Sans', sans-serif;
+    background-color: #f6f9fc;
+    min-height: 100vh;
+  }
+
+  body {
+    background-color: #f6f9fc;
+    color: #1a1a1a;
+    font-family: 'Nunito Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  .animaker-blob {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(60px);
+    opacity: 0.1;
+    border-radius: 50%;
+  }
+  
+  .animaker-blob-1 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle at 30% 70%, #02cbd7 0%, #794eff 90%);
+    top: -100px;
+    left: -100px;
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animaker-blob-2 {
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle at 80% 20%, #794eff 0%, #02cbd7 100%);
+    bottom: -80px;
+    right: -80px;
+    animation: float 8s ease-in-out infinite reverse;
+  }
+  
+  .animaker-card {
+    @apply bg-white rounded-animaker shadow-animaker-card border-0 relative overflow-hidden hover:shadow-animaker-hover transition-shadow duration-300;
+  }
+  
+  .animaker-gradient-text {
+    @apply bg-clip-text text-transparent bg-animaker-gradient;
+  }
+  
+  .animaker-button {
+    @apply bg-primary hover:bg-primary/90 text-white font-medium rounded-animaker px-4 py-2 flex items-center justify-center gap-2 transition-all duration-200 shadow-sm hover:shadow-md hover:translate-y-[-2px];
+  }
+  
+  .animaker-button-secondary {
+    @apply bg-white border border-animaker-gray-300 hover:border-primary/30 text-animaker-text font-medium rounded-animaker px-4 py-2 flex items-center justify-center gap-2 transition-all duration-200 shadow-sm hover:shadow-md hover:translate-y-[-2px];
+  }
+  
+  .animaker-navbar-item {
+    @apply flex items-center gap-2 px-3 py-2 rounded-animaker text-animaker-text-light hover:bg-animaker-gray-100 hover:text-primary transition-colors duration-200;
+  }
+  
+  .animaker-navbar-item-active {
+    @apply flex items-center gap-2 px-3 py-2 rounded-animaker bg-animaker-gray-100 text-primary font-medium transition-colors duration-200;
+  }
+  
+  .animaker-badge {
+    @apply text-xs px-2 py-1 rounded-full inline-flex items-center justify-center;
+  }
+  
+  .animaker-badge-purple {
+    @apply bg-primary/10 text-primary;
+  }
+  
+  .animaker-badge-teal {
+    @apply bg-secondary/10 text-secondary;
+  }
+  
+  .animaker-badge-gray {
+    @apply bg-animaker-gray-200 text-animaker-text-light;
+  }
+  
+  .animaker-icon-bg {
+    @apply rounded-full p-2 flex items-center justify-center;
+  }
+  
+  .animaker-icon-bg-purple {
+    @apply bg-primary/10 text-primary;
+  }
+  
+  .animaker-icon-bg-teal {
+    @apply bg-secondary/10 text-secondary;
+  }
+  
+  .animaker-floating-icon {
+    @apply animate-float;
+  }
+  
+  .animaker-dot-pattern {
+    background-image: radial-gradient(circle, rgba(121, 78, 255, 0.1) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+  
+  .animaker-card-hover-lift {
+    @apply transition-all duration-300 hover:translate-y-[-5px] hover:shadow-animaker-hover;
+  }
+  
+  .animaker-box-highlight {
+    @apply relative overflow-hidden;
+  }
+  
+  .animaker-box-highlight::after {
+    content: '';
+    @apply absolute inset-0 rounded-animaker border-2 border-primary/40 opacity-0 transition-opacity duration-300;
+  }
+  
+  .animaker-box-highlight:hover::after {
+    @apply opacity-100;
+  }
+  
+  .animaker-stats-card {
+    @apply bg-white rounded-animaker-lg p-4 flex flex-col shadow-animaker-card hover:shadow-animaker-hover transition-all duration-300 hover:translate-y-[-2px] border border-animaker-gray-300/50;
+  }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
